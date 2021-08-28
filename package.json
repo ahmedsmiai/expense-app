@@ -1,0 +1,14 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "MERN stack expense app",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "server": "npm run dev --prefix server",
+      "client": "npm start --prefix client"
+      
+    },
+    "author": "ahmed smiai",
+    "license": "MIT"
+  }
+  
