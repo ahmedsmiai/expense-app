@@ -27,6 +27,7 @@ export const onLoadingSignIn = () => {
                 return dispatch(error('You need to login'));
             }
             setAuthHeader(token)
+            dispatch(getProfile())
             dispatch(success(token))
         } catch (e) {
             console.log(e)
