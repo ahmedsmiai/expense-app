@@ -1,6 +1,6 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
-import { NavBar } from './components'
+import { Route, Switch } from 'react-router-dom'
+import { NavBar, ProtectedRoute } from './components'
 import { Login, Home, Signup } from './pages'
 import { Container } from 'reactstrap'
 
@@ -9,9 +9,11 @@ function App() {
     <div>
       <NavBar />
       <Container>
-        <Route path="/" component={Home} exact />
-       <Route path="/Signup" component={Signup} exact /> 
-        <Route path="/Login" component={Login} exact />
+        <Switch>
+          <ProtectedRoute path="/" component={Home} exact />
+        </Switch>
+          <Route path="/Signup" component={Signup} exact />
+          <Route path="/Login" component={Login} exact />
       </Container>
     </div>
   );
