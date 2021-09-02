@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import App from './App';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 
+import App from './App';
+import store from './store/'
+import { onLoadingSignIn } from './actions'
+
+
+store.dispatch(onLoadingSignIn());
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
   , document.getElementById('root')
 );

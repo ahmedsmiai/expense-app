@@ -37,7 +37,7 @@ userController.login = async (req, res, next) => {
     try {
         const user = await User.findOne({ email })
         if (!user) {
-            const err = new Error(`The email ${email} is not available`)
+            const err = new Error(`The email ${email} is not registered`)
             err.status = 401
             next(err);
         }
@@ -53,7 +53,7 @@ userController.login = async (req, res, next) => {
                 res.send({ token })
             } else {
                 res.status(401).send({
-                    error: 'invalid email/password'
+                    error: 'invalid email or password'
                 })
             }
         })
