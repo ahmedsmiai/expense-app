@@ -1,5 +1,6 @@
-import { AUTH_FAILED, AUTH_SUCCESS, AUTH_ATTEMPTING, USER_LOGOUT } from './types'
-import { apiLogin } from '../api/user';
+import { AUTH_FAILED, AUTH_SUCCESS, AUTH_ATTEMPTING, USER_LOGOUT, PROFILE_FETCHED } from './types'
+import { apiLogin, fetchProfile } from '../api/user';
+import setAuthHeader from '../api/setAuthHeader';
 
 const TOKEN_NAME = 'expense_app_token';
 export const signIn = request_data => {
@@ -7,6 +8,8 @@ export const signIn = request_data => {
         dispatch({ type: AUTH_ATTEMPTING })
         try {
             const { data } = await apiLogin(request_data)
+            setAuthHeader(data.token)
+            dispatch(getProfile());
             dispatch(success(data.token))
         } catch (e) {
             const { response: { data } } = e
@@ -23,9 +26,21 @@ export const onLoadingSignIn = () => {
             if (token === null || token === 'undefined') {
                 return dispatch(error('You need to login'));
             }
+            setAuthHeader(token)
             dispatch(success(token))
         } catch (e) {
             console.log(e)
+        }
+    }
+}
+
+export const getProfile = () => {
+    return async dispatch => {
+        try {
+            const { data: { user } } = await fetchProfile()
+            dispatch({type:PROFILE_FETCHED, payload: user})
+        } catch (e) {
+            console.error(e)
         }
     }
 }

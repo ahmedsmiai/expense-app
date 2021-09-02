@@ -22,7 +22,7 @@ router.all('*', (req, res, next) => {
 
 
 //-------- protected routes ------//
-
+router.get('/me', userController.me)
 router.get('/expense', expenseController.get);
 router.post('/expense', expenseController.create);
 router.delete('/expense/:expense_id', expenseController.destroy)

@@ -49,7 +49,7 @@ userController.login = async (req, res, next) => {
                 const secret = process.env.JWT_SECRET;
                 const expiration = process.env.JWT_EXPIRATION;
 
-                const token = jwt.sign({ _id: user._id }, secret, { expiresIn: expiration})
+                const token = jwt.sign({ _id: user._id }, secret, { expiresIn: expiration })
                 res.send({ token })
             } else {
                 res.status(401).send({
@@ -61,5 +61,10 @@ userController.login = async (req, res, next) => {
         next(e)
     }
 };
+
+userController.me = (req, res, next) => {
+    const { user } = req;
+    res.send({ user })
+}
 
 module.exports = userController;
