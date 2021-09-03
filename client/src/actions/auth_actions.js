@@ -18,8 +18,8 @@ export const signIn = request_data => {
     };
 };
 
-export const onLoadingSignIn = () => {
 
+export const onLoadingSignIn = () => {
     return dispatch => {
         try {
             const token = localStorage.getItem(TOKEN_NAME);
@@ -35,6 +35,7 @@ export const onLoadingSignIn = () => {
     }
 }
 
+
 export const getProfile = () => {
     return async dispatch => {
         try {
@@ -46,10 +47,13 @@ export const getProfile = () => {
     }
 }
 
+
 export const logOut = () => {
     localStorage.clear()
     return ({ type: USER_LOGOUT })
 }
+
+
 
 const success = (token) => {
     localStorage.setItem(TOKEN_NAME, token)

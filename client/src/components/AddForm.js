@@ -1,19 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, Input, FormGroup, Label, FormFeedback } from 'reactstrap';
-import { FloatButton } from './FloatButton';
 import { Formik } from 'formik'
 import moment from 'moment'
 import * as Yup from 'yup'
 
-function AddFormComponent(props) {
+import { saveExpense } from '../actions'
+import { FloatButton, ErrorMessage } from '../components';
 
-    function submit(values, bag) {
-        console.log(values)
+
+function useDidUpdate(callback) {
+    const hasMount = useRef(false)
+    useEffect(() => {
+        if (hasMount.current) {
+            callback()
+        } else {
+            hasMount.current = true
+        }
+    })
+}
+
+function AddFormComponent(props) {
+    const formRef=useRef()
+    
+    useDidUpdate(() => {
+        const {saved, error} = props
+        if (error){
+            formRef.current.setSubmitting(false)
+        }
+        if (saved && modal ) {
+            toggle()
+            formRef.current.resetForm()
+            console.log(props.saved, modal)
+            console.log('useeffect ran')
+        }
+    })
+    function submit(values){
+        props.saveExpense(values)
     }
+    
     const [modal, setModal] = useState(false)
     const toggle = () => setModal(!modal)
     const now = moment().format('YYYY-MM-DD')
+    console.log('modal is' + modal)
     return (
         <div>
             <FloatButton onClick={toggle} />
@@ -21,6 +50,7 @@ function AddFormComponent(props) {
                 <ModalHeader toggle={toggle}>Add expense</ModalHeader>
                 <ModalBody>
                     <Formik
+                    innerRef={formRef}
                         initialValues={{
                             amount: '',
                             created: now
@@ -31,7 +61,7 @@ function AddFormComponent(props) {
                             created: Yup.date().required(),
                         })}
                     >
-                    
+
                         {({ errors,
                             touched,
                             handleBlur,
@@ -42,6 +72,7 @@ function AddFormComponent(props) {
                             handleSubmit
                         }) => (
                             <div>
+                            <ErrorMessage/>
                                 <FormGroup>
                                     <Label>
                                         Amount
@@ -59,7 +90,7 @@ function AddFormComponent(props) {
                                         <FormFeedback>{errors.amount}</FormFeedback>
                                     )}
                                 </FormGroup>
-                                <br/>
+                                <br />
                                 <FormGroup>
                                     <Label>
                                         Date
@@ -77,7 +108,7 @@ function AddFormComponent(props) {
                                         <FormFeedback>{errors.created}</FormFeedback>
                                     )}
                                 </FormGroup>
-                                <br/>
+                                <br />
                                 <Button color="primary" onClick={handleSubmit} disabled={!isValid || isSubmitting} > Save </Button>
                             </div>
                         )}
@@ -89,6 +120,12 @@ function AddFormComponent(props) {
 
     )
 }
+const mapStateToProps = ({ expense, errors }) => {
+    return {
+        saved: expense.saved,
+        error: errors.message
+    }
+}
 
-const AddForm = connect(null)(AddFormComponent)
+const AddForm = connect(mapStateToProps, { saveExpense })(AddFormComponent)
 export { AddForm }

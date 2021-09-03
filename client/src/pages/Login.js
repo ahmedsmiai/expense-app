@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import { signIn } from '../actions'
 
-function useDidUpdate (callback, deps) {
+function useDidUpdate (callback) {
     const hasMount = useRef(false)
     useEffect(() => {
       if (hasMount.current) {
@@ -15,17 +15,18 @@ function useDidUpdate (callback, deps) {
       } else {
         hasMount.current = true
       }
-    }, deps)
+    })
   }
 
 function LoginPage(props) {
+
+
     useDidUpdate(()=>{
         const { isAuth } = props
         if (isAuth){
             props.history.push('/')
         }
     })
-
 
 
     const validationSchema = Yup.object({
@@ -38,8 +39,7 @@ function LoginPage(props) {
     })
 
     function handleSubmit() {
-        props.signIn(formik.values)
-        
+        props.signIn(formik.values) 
     }
 
     const formik = useFormik({
@@ -50,7 +50,6 @@ function LoginPage(props) {
         onSubmit: () => {
             handleSubmit()
             formik.resetForm()
-
         },
         validationSchema
     })
