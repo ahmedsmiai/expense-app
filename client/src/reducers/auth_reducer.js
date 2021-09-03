@@ -7,7 +7,7 @@ const initialState = {
     error: null
 }
 
-export default (state = initialState, { type, payload }) => {
+export default function x (state = initialState, { type, payload })  {
     switch (type) {
 
         case AUTH_ATTEMPTING:
