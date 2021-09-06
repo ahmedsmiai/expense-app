@@ -46,7 +46,7 @@ const NavBarComponent = (props) => {
 
     return (
         <div>
-            <Navbar className='p-3' color="dark" dark expand="md">
+            <Navbar className='px-5 py-2'  color="dark" dark expand="md">
                 <NavbarBrand href="/">MERN expense</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>

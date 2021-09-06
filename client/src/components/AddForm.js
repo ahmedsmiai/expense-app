@@ -5,7 +5,7 @@ import { Formik } from 'formik'
 import moment from 'moment'
 import * as Yup from 'yup'
 
-import { saveExpense } from '../actions'
+import { saveExpense, resetSaved, fetchExpense } from '../actions'
 import { FloatButton, ErrorMessage } from '../components';
 
 
@@ -21,28 +21,29 @@ function useDidUpdate(callback) {
 }
 
 function AddFormComponent(props) {
-    const formRef=useRef()
-    
+
+    const [modal, setModal] = useState(false)
+    const formRef = useRef()
+
     useDidUpdate(() => {
-        const {saved, error} = props
-        if (error){
+        const { saved, error, resetSaved, fetchExpense } = props
+        if (error) {
             formRef.current.setSubmitting(false)
         }
-        if (saved && modal ) {
+        if (saved && modal) {
             toggle()
+            fetchExpense(props.selected)
+            resetSaved()
             formRef.current.resetForm()
-            console.log(props.saved, modal)
-            console.log('useeffect ran')
+
         }
     })
-    function submit(values){
+    function submit(values) {
         props.saveExpense(values)
     }
-    
-    const [modal, setModal] = useState(false)
+
     const toggle = () => setModal(!modal)
     const now = moment().format('YYYY-MM-DD')
-    console.log('modal is' + modal)
     return (
         <div>
             <FloatButton onClick={toggle} />
@@ -50,13 +51,15 @@ function AddFormComponent(props) {
                 <ModalHeader toggle={toggle}>Add expense</ModalHeader>
                 <ModalBody>
                     <Formik
-                    innerRef={formRef}
+                        innerRef={formRef}
                         initialValues={{
+                            description: '',
                             amount: '',
                             created: now
                         }}
                         onSubmit={submit}
                         validationSchema={Yup.object().shape({
+                            description: Yup.string().min(3),
                             amount: Yup.number().min(1).required(),
                             created: Yup.date().required(),
                         })}
@@ -72,7 +75,25 @@ function AddFormComponent(props) {
                             handleSubmit
                         }) => (
                             <div>
-                            <ErrorMessage/>
+                                <ErrorMessage />
+                                <FormGroup>
+                                    <Label>
+                                        Description
+                                    </Label>
+                                    <Input
+                                        invalid={errors.description && touched.description}
+                                        name='description'
+                                        value={values.description}
+                                        type='text'
+                                        placeholder='Description'
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.description && touched.description && (
+                                        <FormFeedback>{errors.description}</FormFeedback>
+                                    )}
+                                </FormGroup>
+                                <br />
                                 <FormGroup>
                                     <Label>
                                         Amount
@@ -127,5 +148,6 @@ const mapStateToProps = ({ expense, errors }) => {
     }
 }
 
-const AddForm = connect(mapStateToProps, { saveExpense })(AddFormComponent)
+const AddForm = connect(mapStateToProps, 
+    { saveExpense, resetSaved, fetchExpense })(AddFormComponent)
 export { AddForm }

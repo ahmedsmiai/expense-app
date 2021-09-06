@@ -4,15 +4,28 @@ const expenseController = {}
 
 expenseController.get = async (req, res, next) => {
     const { user } = req;
+    const now = new Date()
+
+    const month = parseInt(req.params.month)
+
+    if (month && month >= 0 && month <= 11) now.setMonth(month)
+
+    const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+
 
     const query = {
         owner: user._id,
+        created: {
+            $gte: firstDay,
+            $lt: lastDay
+        }
     }
 
     try {
-        const result = await Expense.find(query);
+        const result = await Expense.find(query).sort({ created: 'desc' })
         return res.send({
-            expense: result
+            expense: result,
         })
     }
     catch (e) {

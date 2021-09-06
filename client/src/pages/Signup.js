@@ -12,7 +12,7 @@ const Signup = () => {
             .email("Enter a valid email")
             .required("Enter your email"),
         password: Yup.string()
-            .min(8, "Password must contain at least 8 charcters")
+            .min(6, "Password must contain at least 8 charcters")
             .required("Enter a password")
     })
 
@@ -23,7 +23,6 @@ const Signup = () => {
             password: ""
         },
         onSubmit: () => {
-            console.log(formik.values);
             formik.resetForm()
         },
         validationSchema

@@ -8,7 +8,7 @@ export default (state = initialState, { type, payload }) => {
     switch (type) {
 
         case ADD_ERROR:
-            return { ...state,message: payload }
+            return { ...state, message: payload }
 
         case CLEAR_ERRORS:
             return initialState

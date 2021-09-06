@@ -8,3 +8,11 @@ export const ADD_ERROR='ADD_ERROR'
 export const CLEAR_ERRORS='CLEAR_ERRORS'
 
 export const EXPENSE_SAVED = 'EXPENSE_SAVED'
+export const RESET_SAVED = 'RESET_SAVED'  
+
+
+export const FETCHING_EXPENSE = 'FETCHING_EXPENSE'  
+export const FETCHED_SUCCESS = 'FETCHED_SUCCESS'  
+export const FETCHED_FAILED = 'FETCHED_FAILED'  
+
+
