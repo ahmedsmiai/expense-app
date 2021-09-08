@@ -11,7 +11,7 @@ expenseController.get = async (req, res, next) => {
     if (month && month >= 0 && month <= 11) now.setMonth(month)
 
     const firstDay = new Date(now.getFullYear(), now.getMonth(), 1)
-    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+    const lastDay = new Date(now.getFullYear(), now.getMonth() +1, 0)
 
 
     const query = {
@@ -77,8 +77,7 @@ expenseController.update = async (req, res, next) => {
         }
         const expense = await Expense.update(
             { _id: expense_id },
-            { amount, description, created },
-            { upsert: true })
+            { amount, description, created })
         return res.send({
             success: true,
             expense

@@ -3,7 +3,8 @@ import {
     RESET_SAVED,
     FETCHED_FAILED,
     FETCHED_SUCCESS,
-    FETCHING_EXPENSE
+    FETCHING_EXPENSE,
+    EXPENSE_UPDATED
 } from '../actions/types'
 
 
@@ -27,6 +28,8 @@ export default (state = initialState, { type, payload }) => {
             return { ...state, fetching: false }
         case RESET_SAVED:
             return { ...state, saved: false, updated: false }
+        case EXPENSE_UPDATED:
+            return { ...state, updated: true }
         default:
             return state
     }

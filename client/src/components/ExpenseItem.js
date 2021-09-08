@@ -1,7 +1,8 @@
 import React from 'react'
-import { ListGroupItem, Badge } from 'reactstrap'
+import { ListGroupItem, Badge, Button } from 'reactstrap'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
-function ExpenseItem({ item }) {
+function ExpenseItem({ item, onDelete }) {
     return (
         <ListGroupItem>
             <div className="float-start">
@@ -12,6 +13,17 @@ function ExpenseItem({ item }) {
                 </div>
             </div>
             <div className="float-end">
+                <Link to={{
+                    pathname: '/edit',
+                    state: { item } 
+                }}
+                className='btn btn-secondary btn-sm'>
+                    Edit
+                </Link>
+                &nbsp;
+                <Button className='btn btn-danger btn-sm' onClick={onDelete} data-id={item._id}>
+                    Delete
+                </Button>
             </div>
         </ListGroupItem>
     )

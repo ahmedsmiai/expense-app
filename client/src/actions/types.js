@@ -8,6 +8,7 @@ export const ADD_ERROR='ADD_ERROR'
 export const CLEAR_ERRORS='CLEAR_ERRORS'
 
 export const EXPENSE_SAVED = 'EXPENSE_SAVED'
+export const EXPENSE_UPDATED = 'EXPENSE_UPDATED' 
 export const RESET_SAVED = 'RESET_SAVED'  
 
 
