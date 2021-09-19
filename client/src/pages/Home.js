@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { ListGroup, Alert } from 'reactstrap';
-import { fetchExpense,deleteExpense } from '../actions/expense_actions'
-import { AddForm, ExpenseItem, MonthSelector, Spinner } from '../components'
+import { fetchExpense, deleteExpense } from '../actions/expense_actions'
+import { AddForm, ExpenseItem, MonthSelector, Spinner,Statistics } from '../components'
 import moment from 'moment';
 
 function HomeC(props) {
@@ -14,12 +14,12 @@ function HomeC(props) {
         fetchExpense(selected)
     }, [selected])
 
-    const { fetching, expense } = props
-   
+    const { fetching, expense, statistics } = props
+
     function onSelectMonth(month) {
         setSelected(month)
     }
-    function onDelete(e){
+    function onDelete(e) {
         const expId = e.target.attributes.getNamedItem('data-id').value
         props.deleteExpense(expId)
     }
@@ -32,13 +32,19 @@ function HomeC(props) {
             />
             <h3>Expense List</h3>
             <hr />
-            {fetching ? (<Spinner/>):
-               ( 
-                    expense.length > 0 ? (<ListGroup>
-                        {expense.map((item) => (
-                            <ExpenseItem key={item._id} item={item} onDelete={onDelete} />
-                        ))}
-                    </ListGroup>) :
+            {fetching ? (<Spinner />) :
+                (
+
+                    expense.length > 0 ? (
+                        <div>
+                            <Statistics data={statistics} />
+                            <hr />
+                            <ListGroup> {expense.map((item) => (
+                                <ExpenseItem key={item._id} item={item} onDelete={onDelete} />
+                            ))}
+                            </ListGroup>
+                        </div>
+                    ) :
                         (<div >
                             <Alert style={{ display: 'flex', justifyContent: 'center' }} color="secondary">
                                 No saved expenses for this month
@@ -55,9 +61,11 @@ function HomeC(props) {
 const mapStateToProps = ({ expense }) => {
     return {
         fetching: expense.fetching,
-        expense: expense.expense
+        expense: expense.expense,
+        statistics: expense.statistics
+
     }
 }
 
-const Home = connect(mapStateToProps, { deleteExpense,fetchExpense })(HomeC)
+const Home = connect(mapStateToProps, { deleteExpense, fetchExpense })(HomeC)
 export { Home };

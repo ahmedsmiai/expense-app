@@ -21,7 +21,7 @@ export const fetchExpense = (month) => {
             const url = (month>-1 ?`${prefix}/${month}`: prefix  )
             dispatch({ type: FETCHING_EXPENSE });
             const { data } = await apiFetchExpense(url)
-            dispatch({ type: FETCHED_SUCCESS, payload: data.expense })
+            dispatch({ type: FETCHED_SUCCESS, payload: data })
         } catch (e) {
             dispatch({type: FETCHED_FAILED})
             dispatch(addErrorMessage(e))
