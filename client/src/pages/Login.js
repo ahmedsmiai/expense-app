@@ -40,6 +40,7 @@ function LoginPage(props) {
 
     function handleSubmit() {
         props.signIn(formik.values) 
+        console.log(formik.values)
     }
 
     const formik = useFormik({

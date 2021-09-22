@@ -17,7 +17,7 @@ export const saveExpense = expense => {
 export const fetchExpense = (month) => {
     return async dispatch => {
         try {
-            const prefix = '/expense'
+            const prefix = '/api/v1/expense'
             const url = (month>-1 ?`${prefix}/${month}`: prefix  )
             dispatch({ type: FETCHING_EXPENSE });
             const { data } = await apiFetchExpense(url)

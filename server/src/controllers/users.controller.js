@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const userController = {};
 //------- register logic -------//
 
+
 userController.register = async (req, res, next) => {
     const { name, email, joined } = req.body;
     const salt = await bcrypt.genSalt(10)
@@ -17,7 +18,6 @@ userController.register = async (req, res, next) => {
         password: hashedPassword,
         joined
     })
-
     newUser.save()
         .then(user => { res.send({ user }) })
         .catch(e => {

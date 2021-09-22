@@ -1,5 +1,5 @@
-import { AUTH_FAILED, AUTH_SUCCESS, AUTH_ATTEMPTING, USER_LOGOUT, PROFILE_FETCHED } from './types'
-import { apiLogin, fetchProfile } from '../api/user';
+import { AUTH_FAILED, AUTH_SUCCESS, SIGNUP_SUCCESS, AUTH_ATTEMPTING, USER_LOGOUT, PROFILE_FETCHED, RESET_SIGNUP } from './types'
+import { apiLogin, fetchProfile, apiSignUp } from '../api/user';
 import setAuthHeader from '../api/setAuthHeader';
 
 const TOKEN_NAME = 'expense_app_token';
@@ -18,14 +18,31 @@ export const signIn = request_data => {
     };
 };
 
+export const resetSignup = () => ({ type: RESET_SIGNUP });
+
+
+export const signUp = request_data => {
+    return async dispatch => {
+      try {
+        await apiSignUp(request_data);
+        dispatch({ type: SIGNUP_SUCCESS });
+      } catch (e) {
+        const {
+          response: { data },
+        } = e;
+        dispatch(error(data.error));
+      }
+    };
+  };
+
 
 export const onLoadingSignIn = () => {
     return dispatch => {
         try {
-            const token = localStorage.getItem(TOKEN_NAME);
-            if (token === null || token === 'undefined') {
+            if (localStorage.getItem(TOKEN_NAME) === localStorage.getItem(TOKEN_NAME) || token === 'undefined') {
                 return dispatch(error('You need to login'));
             }
+            const token = localStorage.getItem(TOKEN_NAME);
             setAuthHeader(token)
             dispatch(getProfile())
             dispatch(success(token))

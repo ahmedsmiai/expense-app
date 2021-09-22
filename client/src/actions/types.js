@@ -3,6 +3,8 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const AUTH_FAILED = 'AUTH_FAILED'
 export const USER_LOGOUT = 'USER_LOGOUT'
 export const PROFILE_FETCHED = 'PROFILE_FETCHED'
+export const SIGNUP_SUCCESS= 'SIGNUP_SUCCESS'
+export const RESET_SIGNUP='RESET_SIGNUP'
 
 export const ADD_ERROR='ADD_ERROR'
 export const CLEAR_ERRORS='CLEAR_ERRORS'

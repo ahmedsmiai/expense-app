@@ -1,13 +1,17 @@
-import { AUTH_ATTEMPTING, AUTH_FAILED, AUTH_SUCCESS, PROFILE_FETCHED, USER_LOGOUT } from '../actions/types'
+import {
+    AUTH_ATTEMPTING, AUTH_FAILED, AUTH_SUCCESS, SIGNUP_SUCCESS,
+    PROFILE_FETCHED, USER_LOGOUT, RESET_SIGNUP
+} from '../actions/types'
 
 const initialState = {
     attempting: false,
     isAuth: false,
     profile: {},
-    error: null
+    error: null,
+    signedUp: false
 }
 
-export default function x (state = initialState, { type, payload })  {
+export default function x(state = initialState, { type, payload }) {
     switch (type) {
 
         case AUTH_ATTEMPTING:
@@ -44,6 +48,18 @@ export default function x (state = initialState, { type, payload })  {
             return {
                 ...state,
                 profile: payload,
+            }
+        case SIGNUP_SUCCESS:
+            return {
+                ...state,
+                error: null,
+                signedUp: true
+            };    
+        case RESET_SIGNUP:
+            return {
+                ...state,
+                error: null,
+                signedUp:false
             }
         default:
             return state
