@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { connect } from 'react-redux';
 import { Button, FormGroup, Label, Input, FormFeedback, Alert } from 'reactstrap';
 import { useFormik } from 'formik';
@@ -22,13 +22,16 @@ function useDidUpdate(callback) {
 
 const SignupPage = (props) => {
 
+    const [loginInfo, setLoginInfo] = useState({})
+
     useDidUpdate(() => {
         const { signedUp, resetSignup, signIn, isAuth } = props
         if (signedUp) {
             resetSignup()
-            signIn({ email: formik.values.email, password: formik.values.password })
-            if (isAuth) { props.history.push('/') }
+            signIn(loginInfo)
         }
+        if (isAuth) { props.history.push('/') }
+
     })
 
     const validationSchema = Yup.object({
@@ -38,7 +41,7 @@ const SignupPage = (props) => {
             .email("Enter a valid email")
             .required("Enter your email"),
         password: Yup.string()
-            .min(6, "Password must contain at least 8 charcters")
+            .min(6, "Password must contain at least 6 charcters")
             .required("Enter a password")
     })
     function handleSubmit() {
@@ -53,6 +56,9 @@ const SignupPage = (props) => {
 
         onSubmit: () => {
             handleSubmit()
+            setLoginInfo({ email: formik.values.email, password: formik.values.password })
+            formik.resetForm()
+
         },
         validationSchema
     })

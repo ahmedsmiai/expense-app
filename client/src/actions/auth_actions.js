@@ -23,26 +23,27 @@ export const resetSignup = () => ({ type: RESET_SIGNUP });
 
 export const signUp = request_data => {
     return async dispatch => {
-      try {
-        await apiSignUp(request_data);
-        dispatch({ type: SIGNUP_SUCCESS });
-      } catch (e) {
-        const {
-          response: { data },
-        } = e;
-        dispatch(error(data.error));
-      }
+        try {
+            await apiSignUp(request_data);
+            dispatch({ type: SIGNUP_SUCCESS });
+        } catch (e) {
+            const {
+                response: { data },
+            } = e;
+            dispatch(error(data.error));
+        }
     };
-  };
+};
 
 
 export const onLoadingSignIn = () => {
     return dispatch => {
         try {
-            if (localStorage.getItem(TOKEN_NAME) === localStorage.getItem(TOKEN_NAME) || token === 'undefined') {
-                return dispatch(error('You need to login'));
-            }
             const token = localStorage.getItem(TOKEN_NAME);
+
+            if (token === null || token === 'undefined') {
+                return dispatch(error(''));
+            }
             setAuthHeader(token)
             dispatch(getProfile())
             dispatch(success(token))
@@ -57,7 +58,7 @@ export const getProfile = () => {
     return async dispatch => {
         try {
             const { data: { user } } = await fetchProfile()
-            dispatch({type:PROFILE_FETCHED, payload: user})
+            dispatch({ type: PROFILE_FETCHED, payload: user })
         } catch (e) {
             console.error(e)
         }
@@ -67,6 +68,7 @@ export const getProfile = () => {
 
 export const logOut = () => {
     localStorage.clear()
+    setAuthHeader(null);
     return ({ type: USER_LOGOUT })
 }
 

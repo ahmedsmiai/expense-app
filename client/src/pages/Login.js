@@ -7,23 +7,23 @@ import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import { signIn } from '../actions'
 
-function useDidUpdate (callback) {
+function useDidUpdate(callback) {
     const hasMount = useRef(false)
     useEffect(() => {
-      if (hasMount.current) {
-        callback()
-      } else {
-        hasMount.current = true
-      }
+        if (hasMount.current) {
+            callback()
+        } else {
+            hasMount.current = true
+        }
     })
-  }
+}
 
 function LoginPage(props) {
 
 
-    useDidUpdate(()=>{
+    useDidUpdate(() => {
         const { isAuth } = props
-        if (isAuth){
+        if (isAuth) {
             props.history.push('/')
         }
     })
@@ -39,7 +39,7 @@ function LoginPage(props) {
     })
 
     function handleSubmit() {
-        props.signIn(formik.values) 
+        props.signIn(formik.values)
         console.log(formik.values)
     }
 
@@ -72,10 +72,11 @@ function LoginPage(props) {
             <h3>Sign in to your account</h3>
             <hr />
             {renderError()}
-            <div>
-                <FormGroup>
+            <div >
+                <FormGroup  >
                     <Label>Email</Label>
                     <Input
+
                         valid={!formik.errors.email && formik.touched.email}
                         invalid={formik.errors.email && formik.touched.email}
                         name='email'
@@ -84,7 +85,7 @@ function LoginPage(props) {
                         value={formik.values.email}
                         onChange={formik.handleChange('email')}
                     />
-                    <FormFeedback>{formik.errors.email} </FormFeedback>
+                    <FormFeedback>{formik.errors.email}</FormFeedback>
                 </FormGroup>
                 <br />
                 <FormGroup>
@@ -98,7 +99,9 @@ function LoginPage(props) {
                         value={formik.values.password}
                         onChange={formik.handleChange('password')}
                     />
-                    <FormFeedback>{formik.errors.password} </FormFeedback>
+                 
+                        <FormFeedback>{formik.errors.password}</FormFeedback> 
+             
                 </FormGroup>
                 <br />
                 <div className='text-center'>
